@@ -44,6 +44,7 @@
     "cacache": "^6.0.1",
     "checksum-stream": "^1.0.2",
     "dezalgo": "^1.0.3",
+    "hosted-git-info": "^2.2.0",
     "inflight": "^1.0.6",
     "minimatch": "^3.0.3",
     "mississippi": "^1.2.0",
