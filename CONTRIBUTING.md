@@ -172,6 +172,7 @@ In order to label issues, [open up the list of unlabeled issues](https://github.
 Label | Apply When | Notes
 --- | --- | ---
 `bug` | Cases where the code (or documentation) is behaving in a way it wasn't intended to. | If something is happening that surprises the *user* but does not go against the way the code is designed, it should use the `enhancement` label.
+`chore` | This issue or PR is something that just needs to be _done_, requires little time and has little complexity. |
 `critical` | Added to `bug` issues if the problem described makes the code completely unusable in a common situation. |
 `documentation` | Added to issues or pull requests that affect any of the documentation for the project. | Can be combined with other labels, such as `bug` or `enhancement`.
 `duplicate` | Added to issues or PRs that refer to the exact same issue as another one that's been previously labeled. | Duplicate issues should be marked and closed right away, with a message referencing the issue it's a duplicate of (with `#123`)
