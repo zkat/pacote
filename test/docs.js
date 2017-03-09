@@ -23,4 +23,32 @@ test('all fixtures are documented', t => {
   )
 })
 
-test('all toplevel api calls are documented')
+test('all toplevel api calls are documented', t => {
+  const pacote = require('../')
+  function getFns (obj) {
+    const fns = []
+    for (let k in obj) {
+      if (obj.hasOwnProperty(k) && typeof obj[k] === 'function') {
+        fns.push(k)
+        fns.push.apply(fns, getFns(obj[k], k).map(n => `${k}.${n}`))
+      }
+    }
+    return fns
+  }
+  let apiFns = getFns(pacote)
+  t.comment(apiFns)
+  return fs.readFileAsync(
+    path.join(__dirname, '..', 'README.md'),
+    'utf8'
+  ).then(readme => {
+    apiFns.forEach(fn => {
+      t.match(
+        readme,
+        new RegExp(`#### <a name="[^"]+"></a> \`> pacote.${fn}\\([^)]+\\)\``, 'g'),
+        `pacote.${fn} has a docs entry`
+      )
+    })
+  })
+})
+
+test('all options are documented')
