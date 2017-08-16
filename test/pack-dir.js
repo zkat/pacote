@@ -26,7 +26,7 @@ test('packs a directory into a valid tarball', t => {
   fixture.create(CACHE)
   let entries = {}
   const target = through()
-  const extractor = tar.x()
+  const extractor = tar.t()
   extractor.on('entry', (entry) => {
     let data = ''
     entry.on('data', d => { data += d })
