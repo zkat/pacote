@@ -16,13 +16,13 @@ npmlog.level = process.env.LOGLEVEL || 'silent'
 
 test('accepts gid and uid opts', {skip: !process.getuid}, t => {
   const pkg = {
-    'package.json': {
+    'target/package.json': {
       data: JSON.stringify({
         name: 'foo',
         version: '1.0.0'
       })
     },
-    'foo/index.js': 'console.log("hello world!")'
+    'target/foo/index.js': 'console.log("hello world!")'
   }
   const NEWUID = process.getuid() + 1
   const NEWGID = process.getgid() + 1
@@ -30,7 +30,7 @@ test('accepts gid and uid opts', {skip: !process.getuid}, t => {
   process.getuid = () => 0
   const updatedPaths = []
   const fsClone = Object.create(fs)
-  fsClone.utimes = () => {}
+  fsClone.utimes = (_1, _2, _3, cb) => { cb() }
   fsClone.chown = (p, uid, gid, cb) => {
     process.nextTick(() => {
       t.deepEqual({
@@ -56,9 +56,7 @@ test('accepts gid and uid opts', {skip: !process.getuid}, t => {
     }))
   }).then(() => {
     t.deepEqual(updatedPaths, [
-      'target',
       'target/package.json',
-      'target/foo',
       'target/foo/index.js'
     ], 'extracted files had correct uid/gid set')
   })
