@@ -88,6 +88,27 @@ pacote.manifest('pacote@1.0.0').then(pkgJson => {
 })
 ```
 
+#### <a name="packument"></a> `> pacote.packument(spec, [opts])`
+
+Fetches the *packument* for a package. Packument objects are collections of
+manifests where each one represents a different version of a package.
+
+```javascript
+{
+  "name": PkgName,
+  "dist-tags": { TagName: PkgVersion },
+  "versions": { PkgVersion: PkgManifest }
+}
+```
+
+##### Example
+
+```javascript
+pacote.packument('pacote').then(packument => {
+  // do some work with `packument`
+})
+```
+
 #### <a name="extract"></a> `> pacote.extract(spec, destination, [opts])`
 
 Extracts package data identified by `<spec>` into a directory named
