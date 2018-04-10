@@ -51,7 +51,7 @@
     "mississippi": "^3.0.0",
     "mkdirp": "^0.5.1",
     "normalize-package-data": "^2.4.0",
-    "npm-package-arg": "^6.0.0",
+    "npm-package-arg": "^6.1.0",
     "npm-packlist": "^1.1.10",
     "npm-pick-manifest": "^2.1.0",
     "osenv": "^0.1.5",
