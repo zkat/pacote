@@ -185,12 +185,20 @@ if the check fails.
 Additionally, `pacote.extract` will use this integrity string check the cache
 directly for matching contents before performing any other operations.
 
+##### `opts.scopeTargets`
+
+Add scope registry url.
+```javascript
+  opts.scopeTargets = {
+    '@scope': registryUrl
+  }
+```
+
 ##### `opts.cache`
 ##### `opts.cacheUid`/`opts.cacheGid`
 ##### `opts.uid`/`opts.gid`
 ##### `opts.scope`
 ##### `opts.registry`
-##### `opts.@somescope:registry`
 ##### `opts.auth`
 ##### `opts.log`
 ##### `opts.maxSockets`
