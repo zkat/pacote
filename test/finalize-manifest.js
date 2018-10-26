@@ -43,6 +43,7 @@ test('returns a manifest with the right fields', t => {
     bin: './foo.js',
     _resolved: 'resolved.to.this',
     _integrity: 'sha1-deadbeefc0ffeebad1dea',
+    _tarballStandardPath: false,
     _shasum: 'deadbeef1',
     _hasShrinkwrap: false,
     deprecated: 'foo'
@@ -65,6 +66,7 @@ test('returns a manifest with the right fields', t => {
       _shasum: 'deadbeef1',
       _resolved: 'resolved.to.this',
       _integrity: 'sha1-deadbeefc0ffeebad1dea',
+      _tarballStandardPath: false,
       _shrinkwrap: null,
       deprecated: 'foo',
       _id: 'testing@1.2.3'
@@ -94,6 +96,7 @@ test('defaults all field to expected types + values', t => {
       bundleDependencies: false, // because npm does boolean checks on this
       peerDependencies: {},
       bin: null,
+      _tarballStandardPath: false,
       _resolved: base._resolved,
       _integrity: base._integrity,
       _shasum: base._shasum,
@@ -220,6 +223,7 @@ test('fills in `bin` if original was an array', t => {
     },
     _integrity: 'sha1-deadbeefc0ffeebad1dea',
     _shasum: '75e69d6de79f7347df79e6da77575e',
+    _tarballStandardPath: false,
     _resolved: OPTS.registry + tarballPath,
     _hasShrinkwrap: false
   }
@@ -264,6 +268,7 @@ test('uses package.json as base if passed null', t => {
         devDependencies: {},
         bundleDependencies: false,
         peerDependencies: {},
+        _tarballStandardPath: false,
         _resolved: OPTS.registry + tarballPath,
         deprecated: false,
         _integrity: ssri.fromData(tarData, {algorithms: ['sha512']}).toString(),

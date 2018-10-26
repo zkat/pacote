@@ -72,6 +72,7 @@ fields. The object has the following shape:
   "bundleDependencies": false || [PkgName],
   "bin": { BinName: Path },
   "_resolved": TarballSource, // different for each package type
+  "_tarballStandardPath": Boolean, // true if the tarball path follows standard convention for registries, and thus can be guessed correctly.
   "_integrity": SubresourceIntegrityHash,
   "_shrinkwrap": null || ShrinkwrapJsonObj
 }
@@ -245,6 +246,16 @@ specifiers. If true, deprecations do not affect version selection.
 
 If `true`, the full packument will be fetched when doing metadata requests. By
 defaul, `pacote` only fetches the summarized packuments, also called "corgis".
+
+##### <a name="opts-guess-resolved"></a> `opts.guessResolved`
+
+* Type: Boolean
+* Default: false
+
+If true, pacote will guess the resolved URL for `version` registry specs if
+`opts.resolved` is omitted. It will only fall back to manifest checking if the
+guessed URL 404s. Enabling this can be a breaking change because it may add
+spurious 404s.
 
 ##### <a name="opts-tag"></a> `opts.tag`
 

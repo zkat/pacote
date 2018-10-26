@@ -101,7 +101,7 @@ test('fetches version from registry', t => {
 
   srv.get('/foo').reply(200, META)
   return manifest('foo@1.2.3', OPTS).then(pkg => {
-    t.deepEqual(pkg, PKG, 'got manifest from version')
+    t.matches(pkg, PKG, 'got manifest from version')
   })
 })
 
@@ -110,7 +110,7 @@ test('fetchest tag from registry', t => {
 
   srv.get('/foo').reply(200, META)
   return manifest('foo@latest', OPTS).then(pkg => {
-    t.deepEqual(pkg, PKG, 'got manifest from tag')
+    t.matches(pkg, PKG, 'got manifest from tag')
   })
 })
 
@@ -119,7 +119,7 @@ test('fetches version from scoped registry', t => {
 
   srv.get('/@usr%2ffoo').reply(200, META)
   return manifest('@usr/foo@1.2.3', OPTS).then(pkg => {
-    t.deepEqual(pkg, PKG, 'got scoped manifest from version')
+    t.matches(pkg, PKG, 'got scoped manifest from version')
   })
 })
 
@@ -128,7 +128,7 @@ test('fetches tag from scoped registry', t => {
 
   srv.get('/@usr%2ffoo').reply(200, META)
   return manifest('@usr/foo@latest', OPTS).then(pkg => {
-    t.deepEqual(pkg, PKG, 'got scoped manifest from tag')
+    t.matches(pkg, PKG, 'got scoped manifest from tag')
   })
 })
 
@@ -138,7 +138,7 @@ test('fetches manifest from registry by range', t => {
   srv.get('/foo').reply(200, META)
   return manifest('foo@^1.2.0', OPTS).then(pkg => {
     // Not 1.2.4 because 1.2.3 is `latest`
-    t.deepEqual(pkg, new Manifest(META.versions['1.2.3']), 'picked right manifest')
+    t.matches(pkg, new Manifest(META.versions['1.2.3']), 'picked right manifest')
   })
 })
 
@@ -148,7 +148,7 @@ test('fetches manifest from registry by alias', t => {
   srv.get('/foo').reply(200, META)
   return manifest('bar@npm:foo@^1.2.0', OPTS).then(pkg => {
     // Not 1.2.4 because 1.2.3 is `latest`
-    t.deepEqual(pkg, new Manifest(META.versions['1.2.3']), 'picked right manifest')
+    t.matches(pkg, new Manifest(META.versions['1.2.3']), 'picked right manifest')
   })
 })
 
@@ -157,7 +157,7 @@ test('fetches manifest from scoped registry by range', t => {
 
   srv.get('/@usr%2ffoo').reply(200, META)
   return manifest('@usr/foo@^1.2.0', OPTS).then(pkg => {
-    t.deepEqual(pkg, new Manifest(META.versions['1.2.3']), 'got scoped manifest from version')
+    t.matches(pkg, new Manifest(META.versions['1.2.3']), 'got scoped manifest from version')
   })
 })
 
@@ -166,7 +166,7 @@ test('fetches scoped manifest from registry by alias', t => {
 
   srv.get('/@usr%2ffoo').reply(200, META)
   return manifest('bar@npm:@usr/foo@^1.2.0', OPTS).then(pkg => {
-    t.deepEqual(pkg, new Manifest(META.versions['1.2.3']), 'got scoped manifest from version')
+    t.matches(pkg, new Manifest(META.versions['1.2.3']), 'got scoped manifest from version')
   })
 })
 
@@ -177,12 +177,12 @@ test('supports opts.includeDeprecated', t => {
   return manifest('foo@^2', Object.assign({
     includeDeprecated: true
   }, OPTS)).then(pkg => {
-    t.deepEqual(pkg, new Manifest(META.versions['2.0.5']), 'got deprecated')
+    t.matches(pkg, new Manifest(META.versions['2.0.5']), 'got deprecated')
     return manifest('foo@^2.0', Object.assign({
       includeDeprecated: false
     }, OPTS))
   }).then(pkg => {
-    t.deepEqual(pkg, new Manifest(META.versions['2.0.4']), 'non-deprecated')
+    t.matches(pkg, new Manifest(META.versions['2.0.4']), 'non-deprecated')
   })
 })
 
@@ -201,7 +201,7 @@ test('sends auth token if passed in opts', t => {
     'authorization', 'Bearer ' + TOKEN
   ).reply(200, META)
   return manifest('foo@1.2.3', opts).then(pkg => {
-    t.deepEqual(pkg, PKG, 'got manifest from version')
+    t.matches(pkg, PKG, 'got manifest from version')
   })
 })
 
@@ -210,7 +210,7 @@ test('treats options as optional', t => {
 
   srv.get('/foo').reply(200, META)
   return manifest('foo@1.2.3').then(pkg => {
-    t.deepEqual(pkg, PKG, 'used default options')
+    t.matches(pkg, PKG, 'used default options')
   })
 })
 
@@ -223,7 +223,7 @@ test('uses scope from spec for registry lookup', t => {
   const srv = tnock(t, OPTS.registry)
   srv.get('/@myscope%2ffoo').reply(200, META)
   return manifest('@myscope/foo@1.2.3', opts).then(pkg => {
-    t.deepEqual(pkg, PKG, 'used scope to pick registry')
+    t.matches(pkg, PKG, 'used scope to pick registry')
   })
 })
 
@@ -240,13 +240,13 @@ test('uses scope opt for registry lookup', t => {
       // scope option takes priority
       registry: 'nope'
     }).then(pkg => {
-      t.deepEqual(pkg, PKG, 'used scope to pick registry')
+      t.matches(pkg, PKG, 'used scope to pick registry')
     }),
     manifest('bar@latest', {
       '@myscope:registry': OPTS.registry,
       scope: 'myscope' // @ auto-inserted
     }).then(pkg => {
-      t.deepEqual(pkg, PKG, 'scope @ was auto-inserted')
+      t.matches(pkg, PKG, 'scope @ was auto-inserted')
     })
   )
 })
@@ -256,7 +256,7 @@ test('defaults to registry.npmjs.org if no option given', t => {
 
   srv.get('/foo').reply(200, META)
   return manifest('foo@1.2.3', { registry: undefined }).then(pkg => {
-    t.deepEqual(pkg, PKG, 'used npm registry')
+    t.matches(pkg, PKG, 'used npm registry')
   })
 })
 
@@ -274,7 +274,7 @@ test('supports scoped auth', t => {
     'authorization', 'Bearer ' + TOKEN
   ).reply(200, META)
   return manifest('foo@1.2.3', opts).then(pkg => {
-    t.deepEqual(pkg, PKG, 'used scope to pick registry and auth')
+    t.matches(pkg, PKG, 'used scope to pick registry and auth')
   })
 })
 
@@ -293,7 +293,7 @@ test('sends auth token if passed in global opts', t => {
     'authorization', 'Bearer ' + TOKEN
   ).reply(200, META)
   return manifest('foo@1.2.3', opts).then(pkg => {
-    t.deepEqual(pkg, PKG, 'got manifest from version')
+    t.matches(pkg, PKG, 'got manifest from version')
   })
 })
 
@@ -312,7 +312,7 @@ test('sends basic authorization if alwaysAuth and _auth', t => {
     'authorization', 'Basic ' + TOKEN
   ).reply(200, META)
   return manifest('foo@1.2.3', opts).then(pkg => {
-    t.deepEqual(pkg, PKG, 'got manifest from version')
+    t.matches(pkg, PKG, 'got manifest from version')
   })
 })
 
@@ -342,10 +342,10 @@ test('package requests are case-sensitive', t => {
 
   return BB.join(
     manifest('Foo@1.2.3', OPTS).then(pkg => {
-      t.deepEqual(pkg, CASEDPKG, 'got Cased package')
+      t.matches(pkg, CASEDPKG, 'got Cased package')
     }),
     manifest('foo@1.2.3', OPTS).then(pkg => {
-      t.deepEqual(pkg, PKG, 'got lowercased package')
+      t.matches(pkg, PKG, 'got lowercased package')
     })
   )
 })
@@ -358,10 +358,10 @@ test('handles server-side case-normalization', t => {
 
   return BB.join(
     manifest('Cased@1.2.3', OPTS).then(pkg => {
-      t.deepEqual(pkg, PKG, 'got Cased package')
+      t.matches(pkg, PKG, 'got Cased package')
     }),
     manifest('cased@latest', OPTS).then(pkg => {
-      t.deepEqual(pkg, PKG, 'got lowercased package')
+      t.matches(pkg, PKG, 'got lowercased package')
     })
   )
 })
@@ -393,7 +393,7 @@ test('recovers from request errors', t => {
   })
 
   manifest('foo@1.2.3', opts).then(pkg => {
-    t.deepEqual(pkg, PKG, 'got a manifest')
+    t.matches(pkg, PKG, 'got a manifest')
   })
 })
 
@@ -414,7 +414,39 @@ test('optionally annotates manifest with request-related metadata', t => {
 
   srv.get('/foo').reply(200, META)
   return manifest('foo@1.2.3', opts).then(pkg => {
-    t.deepEqual(pkg, annotated, 'additional data was added to pkg')
+    t.matches(pkg, annotated, 'additional data was added to pkg')
+  })
+})
+
+test('adds _tarballStandardPath helper based on dist.tarball', t => {
+  const srv = tnock(t, OPTS.registry)
+  const opts = {
+    log: OPTS.log,
+    registry: OPTS.registry,
+    retry: false,
+    where: 'right here'
+  }
+  const newBase = {
+    name: 'foo',
+    version: '1.2.4',
+    _hasShrinkwrap: false,
+    _tarballStandardPath: true,
+    _integrity: 'sha1-blablabla',
+    _shasum: '75e69d6de79f',
+    _resolved: `${OPTS.registry}/foo/-/foo-1.2.4.tgz`,
+    dist: {
+      integrity: 'sha1-blablabla',
+      shasum: '75e69d6de79f',
+      tarball: `${OPTS.registry}/foo/-/foo-1.2.4.tgz`
+    }
+  }
+
+  srv.get('/foo').reply(200, {
+    'dist-tags': {latest: '1.2.4'},
+    versions: {'1.2.4': newBase}
+  })
+  return manifest('foo@1.2.4', opts).then(pkg => {
+    t.matches(pkg, new Manifest(newBase), '_tarballStandardPath true')
   })
 })
 
@@ -433,6 +465,6 @@ test('sends npm-session header if passed in opts', t => {
     'npm-session', SESSION_ID
   ).reply(200, META)
   return manifest('foo@1.2.3', opts).then(pkg => {
-    t.deepEqual(pkg, PKG, 'npm-session header was sent')
+    t.matches(pkg, PKG, 'npm-session header was sent')
   })
 })

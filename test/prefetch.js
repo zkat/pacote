@@ -19,6 +19,7 @@ const BASE = {
   name: 'foo',
   version: '1.0.0',
   _hasShrinkwrap: false,
+  _tarballStandardPath: false,
   _resolved: 'https://foo.bar/x.tgz',
   dist: {
     tarball: 'https://foo.bar/x.tgz'

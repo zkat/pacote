@@ -58,6 +58,7 @@ test('supports directory deps', t => {
       peerDependencies: {},
       deprecated: false,
       _resolved: path.resolve(PKG).replace(/\\/g, '/'),
+      _tarballStandardPath: false,
       _shasum: null,
       _integrity: null,
       _shrinkwrap: sr,

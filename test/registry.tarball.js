@@ -200,3 +200,48 @@ test('opts.resolved is ignored if url points to a different host', t => {
     })
   })
 })
+
+test('opts.guessResolved with no opts.resolved, guessed for version specs if missing, based on `registry`', t => {
+  const pkg = {
+    'package.json': JSON.stringify({
+      name: 'foo',
+      version: '1.2.3'
+    }),
+    'index.js': 'console.log("hello world!")'
+  }
+  const opts = Object.assign({}, {
+    guessResolved: true
+  }, OPTS)
+  return mockTar(pkg).then(tarData => {
+    const srv = tnock(t, opts.registry)
+    srv.get('/foo/-/foo-1.2.3.tgz').reply(200, tarData)
+    return getBuff(fetch.tarball(npa('foo@1.2.3'), opts)).then(data => {
+      t.deepEqual(data, tarData, 'guessed registry tarball when no opts.resolved')
+    })
+  })
+})
+
+test('opts.guessResolved with no opts.resolved, falls back to manifest on failure', t => {
+  const pkg = {
+    'package.json': JSON.stringify({
+      name: 'foo',
+      version: '1.2.3'
+    }),
+    'index.js': 'console.log("hello world!")'
+  }
+  const opts = Object.assign({}, {
+    guessResolved: true
+  }, OPTS)
+  return mockTar(pkg).then(tarData => {
+    const srv = tnock(t, opts.registry)
+    srv.get('/foo/-/foo-1.2.3.tgz').reply(404)
+    const metadata = META(tarData)
+    metadata.versions['1.2.3'].dist.tarball = 'https://some-other-registry/foo-is-here.tgz'
+    srv.get('/foo').reply(200, metadata)
+    const otherSrv = tnock(t, 'https://some-other-registry')
+    otherSrv.get('/foo-is-here.tgz').reply(200, tarData)
+    return getBuff(fetch.tarball(npa('foo@1.2.3'), opts)).then(data => {
+      t.deepEqual(data, tarData, 'guessed registry tarball, then fell back')
+    })
+  })
+})
