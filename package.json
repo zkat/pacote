@@ -46,6 +46,7 @@
     "figgy-pudding": "^3.5.1",
     "get-stream": "^4.1.0",
     "glob": "^7.1.3",
+    "ipfs-http-client": "^30.1.1",
     "lru-cache": "^5.1.1",
     "make-fetch-happen": "^4.0.1",
     "minimatch": "^3.0.4",
