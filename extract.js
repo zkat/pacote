@@ -25,7 +25,7 @@ function extract (spec, dest, opts) {
     return tryExtract(spec, stream, dest, opts)
   })
     .then(() => {
-      if (!opts.resolved) {
+      if (!opts.resolved && !opts.unmodified) {
         const pjson = path.join(dest, 'package.json')
         return readFileAsync(pjson, 'utf8')
           .then(str => truncateAsync(pjson)
